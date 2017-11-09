@@ -1,0 +1,24 @@
+<launch>
+	
+	<!--    If you use roslaunch, it will automatically start roscore if it detects that it is not already running.	-->
+	
+	<!--	###################	POINTING GESTURES OBJECT DETECTION LAUNCH #########################	-->
+
+	<!--					KINECT DRIVER 	LAUNCH						
+	<include file="$(find openni_launch)/launch/openni.launch"																												/> -->
+	
+	<!--				   	PITT LAUNCH									
+	<include file="$(find pitt_object_table_segmentation)/table_segmentation.launch"																						/> -->
+	
+	<!--				   	SENSOR NODE FOR THE SKELETON TRACKING		-->
+	<node name="openni_tracker" 			pkg="openni_tracker" 						type="openni_tracker" 					launch-prefix="gnome-terminal --command"	/> <!-- output="screen"/> -->
+	<node name="tracker_node" 				pkg="pointing_gestures_object_detection" 	type="tracker_node"																	/> <!-- output="screen"/> -->
+	
+	<!--				   	OBJECT ACQUISITION NODE						-->
+	<node name="object_acquisition_node" 		pkg="pointing_gestures_object_detection" 	type="object_acquisition_node"		launch-prefix="gnome-terminal --command"	/> <!-- output="screen"/> -->
+
+	
+	<!--				   	OBJECT DETECTION NODE						-->
+	<node name="object_detection_node" 		pkg="pointing_gestures_object_detection" 	type="object_detection_node" 			launch-prefix="gnome-terminal --command"	/> <!-- output="screen"/> -->
+
+</launch>

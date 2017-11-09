@@ -1,0 +1,134 @@
+#include <ros/ros.h>
+#include <tf/transform_listener.h>
+#include <geometry_msgs/Twist.h>
+#include <string>
+#include <iostream>
+#include <math.h>
+#include "pitt_msgs/TrackedShapes.h" 	// for out message (an array of TrackedShape), it internally include TrackedShape.h
+
+using namespace std;
+using namespace pitt_msgs;
+
+//global variables
+float px1,py1,pz1,px2,py2,pz2;
+
+/*
+void trackedShapesCallback(const TrackedShapesConstPtr& msg)
+{
+	TrackedShape trackedShapes[100];
+	
+	trackedShapes[0] = msg -> tracked_shapes[0];
+	//geometry_msgs::Point centerOfGravity;
+	
+	cout<< trackedShapes[0].x_est_centroid <<endl;
+	cout<< msg -> tracked_shapes.size() <<endl;
+
+}
+*/
+
+void rightElbowJointCallback(const geometry_msgs::Point& t_helbow)
+{
+
+	//cout<<"chiamata la callback di elbow"<<endl;
+	px1 = t_helbow.x;
+	py1 = t_helbow.y;
+	pz1 = t_helbow.z;
+}
+ 
+void rightHandJointCallback(const geometry_msgs::Point& t_hand)
+{
+	//cout<<"chiamata la callback di hand"<<endl;	
+	px2 = t_hand.x;
+	py2 = t_hand.y;
+	pz2 = t_hand.z;
+}
+
+int main( int argc, char** argv )
+{
+	ros::init(argc, argv, "object_detection_node");
+	ros::NodeHandle node;
+	ros::Rate r(10);			//frequency
+
+	//ros::Subscriber sub = node.subscribe("ransac_segmentation/trackedShapes", 20, trackedShapesCallback);
+	ros::Subscriber sub1 = node.subscribe("/right_elbow_joint", 20, rightElbowJointCallback);
+	ros::Subscriber sub2 = node.subscribe("/right_hand_joint", 20, rightHandJointCallback);
+
+
+
+	while(ros::ok()){
+
+		cout << "Cordinate del gomito: x " << px1 << ", y " << py1 << ", z " << pz1 << endl;
+		cout << "Cordinate della mano: x " << px2 << ", y " << py2 << ", z " << pz2 << endl;
+
+/*
+		//equazione del piano passante per il centro di massa dell'oggetto 
+		//perpendicolare al puntamento della mano
+		//per il piano: un punto del piano e vettore perpendicolare
+		//nella forma "ax + by + cz + d = 0"
+
+		//valore dato da un altro nodo ROS
+		geometry_msgs::Point centerOfGravity;
+
+		centerOfGravity.x = 1.06154;
+		centerOfGravity.y = 0.137104;
+		centerOfGravity.z = -0.160089;
+
+
+		//componenti vettore perpendicolare al piano ricavate dall'equazione
+		//parametrica della retta (nello specifico è il coefficiente di t)
+		//componenente z = 0.0
+		geometry_msgs::Vector3 planeVector;
+		planeVector.x = (px2 - px1);
+		planeVector.y = (py2 - py1);
+		planeVector.z = 0.0;
+
+		float a,b,c,d;
+
+		a = planeVector.x;
+		b = planeVector.y;
+		c = planeVector.z;
+
+		d = -(a*centerOfGravity.x + b*centerOfGravity.y + c*centerOfGravity.z);
+
+		//equazione del piano completata
+		//a*x + b*y + c*z + d = 0;
+	
+		//intersezione retta di puntamneto e piano costruito sull'oggetto
+		//equazione parametrica della retta passante per due punti (right_elbow_pose - right_hand_pose)
+		//x = px1 + t * (px2 - px1);
+		//y = py1 + t * (py2 - py1);
+		//z = pz1 + t * (pz2 - pz1);
+		//messa a sistema con l'equazione del piano ricavo il valore di 't' 
+		//e lo sostituisco nell'equazione parametrica della retta
+		//ottenendo cosi' le coordinate del punto di intersezione 
+
+		float t = -((a*px1 + b*py1 + c*pz1 + d)/(a*(px2 - px1) + b*(py2 - py1) + c*(pz2 - pz1)));
+
+		geometry_msgs::Point intersection;
+		intersection.x = px1 + t * (px2 - px1);
+		intersection.y = py1 + t * (py2 - py1);
+		intersection.z = pz1 + t * (pz2 - pz1);
+
+		//int ix = intersection.x;
+		float iy = intersection.y;
+		float iz = intersection.z;
+
+		//int cx = centerOfGravity.x;
+		float cy = centerOfGravity.y;
+		float cz = centerOfGravity.z;
+
+		// controllo l'intorno dell'oggetto che voglio puntare
+		if((iy < (cy + 0.1) && iy > (cy - 0.1))&&
+			(iz < (cz + 0.2) && iz > (cz - 0.2))){
+
+				cout<<"Oggetto puntato \n\n";
+		}
+*/
+
+		ros::spinOnce();
+	}
+
+	r.sleep();
+}
+	
+	
