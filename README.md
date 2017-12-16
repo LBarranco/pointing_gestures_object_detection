@@ -1,7 +1,7 @@
 # Pointing gestures object detection
   Assignment 11: Robot beliefs browsing using pointing gestures
 
-![N|Solid](https://github.com/LBarranco/pointing_gestures_object_detection/blob/master/Pointing%20gestures%20object%20detection%20architecture.png?raw=true)
+[![N|Solid](https://github.com/LBarranco/pointing_gestures_object_detection/blob/master/Pointing%20gesture%20object%20detection%20architecture.png?raw=true)](https://nodesource.com/products/nsolid)
 
 The goal of the assignment is to allow a human to ask a robot, using pointing gestures, to express its beliefs about a specific object in a table-top scenario, given a vision-based and an ontology-based software packages.
 
@@ -33,14 +33,6 @@ Use the launch file “pointing_gestures_object_detection.launch” to run the p
 
 The ROS package has mostly been developed on Ubuntu 14.04 and using ROS Indigo, but it has been tested even on Ubuntu 16.04 and ROS Kinetic.
 
-### Launching
-To launch the package use the following shell commands in this order:
-```sh
-    $ roslaunch openni_launch openni.launch
-    $ roslaunch pitt_object_table_segmentation table_segmentation.launch
-    $ roslaunch pointing_gestures_object_detection pointing_gestures_object_detection.launch 
-```
-
 ### Usage
 
 Overview of the constraints:
@@ -69,6 +61,11 @@ Constraints in details:
 - Objects
     - The constraints concerning the objects are those imposed by PITT package.
 
+### Conclusions
+
+During the final phase of testing we noticed that the ROS package to the current version has a pointing system not intuitive for a person, because the system, as explained previously, uses the coordinates of elbow and hand to create a straight line used to point, while a human being does not point using the forearm, but rather the fingers, and even if he is told to use it he still commits an error that depends on the point of view placed in the head and not in the shoulder.
+A possible next step is to readapt and integrate a ros electric package that identifies the vectors oucoming from fingers in order to improve accuracy.
+http://wiki.ros.org/mit-ros-pkg/KinectDemos/FingerDetection
 
 ### Credits
 
