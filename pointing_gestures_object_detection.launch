@@ -11,7 +11,6 @@
 	<include file="$(find pitt_object_table_segmentation)/table_segmentation.launch"																						/> -->
 	
 	<!--				   	SENSOR NODE FOR THE SKELETON TRACKING		-->
-	<node name="openni_tracker" 			pkg="openni_tracker" 						type="openni_tracker" 					launch-prefix="gnome-terminal --command"	/> <!-- output="screen"/> -->
 	<node name="tracker_node" 				pkg="pointing_gestures_object_detection" 	type="tracker_node"																	/> <!-- output="screen"/> -->
 	
 	<!--				   	OBJECT ACQUISITION NODE						-->
